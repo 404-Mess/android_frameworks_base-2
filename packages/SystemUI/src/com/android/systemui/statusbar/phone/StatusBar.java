@@ -60,6 +60,7 @@ import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentCallbacks2;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -68,6 +69,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
+import android.database.ContentObserver;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.metrics.LogMaker;
@@ -128,11 +130,6 @@ import com.android.keyguard.ViewMediatorCallback;
 import com.android.systemui.ActivityIntentHelper;
 import com.android.systemui.AutoReinflateContainer;
 import com.android.systemui.DejankUtils;
-<<<<<<< HEAD
-=======
-import com.android.systemui.Dependency;
-import com.android.systemui.Dumpable;
->>>>>>> d0bf19c1414e (base: Add some static custom utilities)
 import com.android.systemui.EventLogTags;
 import com.android.systemui.InitController;
 import com.android.systemui.Prefs;
@@ -1000,10 +997,42 @@ public class StatusBar extends SystemUI implements
                 result.mAppearanceRegions, result.mNavbarColorManagedByIme, result.mBehavior,
                 result.mRequestedVisibilities, result.mPackageName);
 
+        mCustomSettingsObserver.observe();
+        mCustomSettingsObserver.update();
+
         // StatusBarManagerService has a back up of IME token and it's restored here.
         mCommandQueueCallbacks.setImeWindowStatus(mDisplayId, result.mImeToken,
                 result.mImeWindowVis, result.mImeBackDisposition, result.mShowImeSwitcher);
 
+    private CustomSettingsObserver mCustomSettingsObserver = new CustomSettingsObserver(mHandler);
+    private class CustomSettingsObserver extends ContentObserver {
+
+        CustomSettingsObserver(Handler handler) {
+            super(handler);
+        }
+
+        void observe() {
+            ContentResolver resolver = mContext.getContentResolver();
+            /*resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.XXX),
+                    false, this, UserHandle.USER_ALL);*/
+        }
+
+        @Override
+        public void onChange(boolean selfChange, Uri uri) {
+            /*if (uri.equals(Settings.System.getUriFor(
+                    Settings.System.XXX))) {
+                doXXX();
+            }*/
+        }
+
+        public void update() {
+            //doXXX();
+        }
+    }
+
+    /*private void doXXX() {
+    }*/
         // Set up the initial icon state
         int numIcons = result.mIcons.size();
         for (int i = 0; i < numIcons; i++) {
