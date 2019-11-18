@@ -1013,26 +1013,29 @@ public class StatusBar extends SystemUI implements
 
         void observe() {
             ContentResolver resolver = mContext.getContentResolver();
-            /*resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.XXX),
-                    false, this, UserHandle.USER_ALL);*/
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.LOCKSCREEN_MEDIA_BLUR),
+                    false, this, UserHandle.USER_ALL);
         }
 
         @Override
         public void onChange(boolean selfChange, Uri uri) {
-            /*if (uri.equals(Settings.System.getUriFor(
-                    Settings.System.XXX))) {
-                doXXX();
-            }*/
+		if (uri.equals(Settings.System.getUriFor(
+                    Settings.System.LOCKSCREEN_MEDIA_BLUR))) {
+                setLockScreenMediaBlurLevel();
+            }
         }
 
         public void update() {
-            //doXXX();
+            setLockScreenMediaBlurLevel();
         }
     }
 
-    /*private void doXXX() {
-    }*/
+    private void setLockScreenMediaBlurLevel() {
+        if (mMediaManager != null) {
+            mMediaManager.setLockScreenMediaBlurLevel();
+        }
+    }
         // Set up the initial icon state
         int numIcons = result.mIcons.size();
         for (int i = 0; i < numIcons; i++) {
@@ -1104,7 +1107,8 @@ public class StatusBar extends SystemUI implements
         mFalsingManager.addFalsingBeliefListener(mFalsingBeliefListener);
 
         mPluginManager.addPluginListener(
-                new PluginListener<OverlayPlugin>() {
+
+           new PluginListener<OverlayPlugin>() {
                     private final ArraySet<OverlayPlugin> mOverlays = new ArraySet<>();
 
                     @Override
