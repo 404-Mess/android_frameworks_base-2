@@ -20,7 +20,8 @@ class KeyguardSmartspaceController @Inject constructor(
 ) {
     init {
         if (!featureFlags.isSmartspaceEnabled()) {
-            context.packageManager.setComponentEnabledSetting(ComponentName("com.android.systemui", "com.p404.android.systemui.keyguard.P404KeyguardSliceProvider"), 1, 1)
+            context.packageManager.setComponentEnabledSetting(
+                ComponentName("com.android.systemui", "com.p404.android.systemui.keyguard.P404KeyguardSliceProvider"), 1, 1)
         } else {
             mediaController.init()
             zenController.init()

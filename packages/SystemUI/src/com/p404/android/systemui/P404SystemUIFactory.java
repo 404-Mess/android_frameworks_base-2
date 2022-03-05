@@ -2,7 +2,6 @@ package com.p404.android.systemui;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.os.Handler;
 
 import com.p404.android.systemui.dagger.P404GlobalRootComponent;
 import com.p404.android.systemui.dagger.P404SysUIComponent;
